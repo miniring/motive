@@ -13,7 +13,10 @@
     "types": [
       "webpack-env",
       "mocha",
-      "chai"
+      "chai",
+      "graphql",
+      "vue-apollo",
+      "vue-cli-plugin-apollo"
     ],
     "paths": {
       "@/*": [

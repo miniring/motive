@@ -1,0 +1,8 @@
+mutation($text) {
+  addTodo(text: $text) {
+    id
+    text
+    isCompleted
+    isImportant
+  }
+}

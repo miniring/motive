@@ -1,0 +1,8 @@
+query todoList {
+  todoList {
+    id
+    text
+    isCompleted
+    isImportant
+  }
+}
