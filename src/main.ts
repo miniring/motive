@@ -3,8 +3,8 @@ import './plugins/function-api.js'
 import './plugins/element-ui.js'
 import App from './App.vue'
 import router from './router'
-import store from './store'
-import { createProvider } from './vue-apollo'
+import { store } from './store'
+import apolloProvider from './apollo'
 import 'normalize.css'
 
 Vue.config.productionTip = false
@@ -12,6 +12,6 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
-  apolloProvider: createProvider(),
+  apolloProvider,
   render: h => h(App)
 }).$mount('#app')

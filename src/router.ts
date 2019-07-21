@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
 
 Vue.use(Router)
 
@@ -8,17 +7,31 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
+      redirect: { name: 'todo' }
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      path: '/todo',
+      name: 'todo',
       component: () =>
-        import(/* webpackChunkName: 'about' */ './views/About.vue')
+        import('./views/Todo.vue')
+    },
+    {
+      path: '/habbit',
+      name: 'habbit',
+      component: () =>
+        import('./views/Habbit.vue')
+    },
+    {
+      path: '/mission',
+      name: 'mission',
+      component: () =>
+        import('./views/Mission.vue')
+    },
+    {
+      path: '/value',
+      name: 'value',
+      component: () =>
+        import('./views/Value.vue')
     }
   ]
 })

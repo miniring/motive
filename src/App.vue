@@ -12,33 +12,38 @@
             <ul>
               <li>
                 <span class="item_icon">✍️</span>
-                <span class="item_name">Todo</span>
+                <span class="item_name">
+                  <router-link to="/todo">Todo</router-link>
+                </span>
               </li>
               <li>
                 <span class="item_icon">🎯</span>
-                <span class="item_name">Habbit</span>
+                <span class="item_name">
+                  <router-link to="/habbit">Habbit</router-link>
+                </span>
               </li>
               <li>
                 <span class="item_icon">🗺</span>
-                <span class="item_name">Mission</span>
+                <span class="item_name">
+                  <router-link to="/mission">Mission</router-link>
+                </span>
               </li>
               <li>
                 <span class="item_icon">⭐️</span>
-                <span class="item_name">Value</span>
+                <span class="item_name">
+                  <router-link to="/value">Value</router-link>
+                </span>
               </li>
             </ul>
           </div>
         </div>
         <div id="content">
-          <div id="editor"></div>
+          <div id="editor">
+            <router-view />
+          </div>
         </div>
       </div>
     </div>
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view /> -->
   </div>
 </template>
 
@@ -165,6 +170,12 @@ body {
   font-weight: 500;
   margin-left: 10px;
 }
+#list_box li .item_name a {
+  display: inline-block;
+  color: #333;
+  text-decoration: none;
+  width: 100%;
+}
 
 #content {
   width: 656px;
@@ -178,8 +189,8 @@ body {
 }
 #editor {
   vertical-align: top;
-  padding-left: 39px;
-  padding-right: 9px;
+  padding-left: 20px;
+  padding-right: 20px;
   padding-top: 80px;
   padding-bottom: 84px;
 }

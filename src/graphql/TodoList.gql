@@ -2,7 +2,8 @@ query todoList {
   todoList {
     id
     text
+    description
     isCompleted
-    isImportant
+    ordering
   }
 }

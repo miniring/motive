@@ -1,8 +1,9 @@
-mutation($text) {
-  addTodo(text: $text) {
+mutation AddTodo($text, $description, $ordering) {
+  addTodo(text: $text, description: $description, ordering: $ordering) {
     id
     text
+    description
     isCompleted
-    isImportant
+    ordering
   }
 }
