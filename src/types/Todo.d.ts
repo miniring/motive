@@ -8,6 +8,7 @@ export interface Todo {
   description: string
   isCompleted: boolean
   ordering: number
+  completedAt: string
 }
 
 export type TodoList = Todo[]

@@ -1,9 +1,17 @@
 <template>
-  <div class="todo">
+  <div id="todo">
     <el-card class="important">
-      {{ active[0] && active[0].text }}
+      {{ active[0] ? active[0].text : '작업을 추가하세요.'}}
     </el-card>
-    <todo-list></todo-list>    
+    <todo-list></todo-list>
+    <el-timeline :reverse="false" style="margin-top:20px;text-align:left;">
+      <el-timeline-item
+        v-for="(todo, index) in completed"
+        :key="index"
+        :timestamp="todo.completedAt">
+        {{todo.text}}
+      </el-timeline-item>
+    </el-timeline>
   </div>
 </template>
 
@@ -17,7 +25,7 @@ export default {
     'todo-list': () => import('../components/TodoList.vue')
   },
   computed: {
-    ...mapGetters(['active'])
+    ...mapGetters(['active', 'completed'])
   }
 }
 </script>

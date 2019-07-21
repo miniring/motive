@@ -12,6 +12,7 @@ const todoListQuery = gql`{
     description
     isCompleted
     ordering
+    completedAt
   }
 }`
 
@@ -26,13 +27,14 @@ const addTodoMutation = gql`
   }
 `
 const updateTodoMutation = gql`
-  mutation updateTodo($id: ID!, $text: String!, $description: String!, $isCompleted: Boolean!, $ordering: Int!) {
-    updateTodo(id: $id, text: $text, description: $description, isCompleted: $isCompleted, ordering: $ordering) {
+  mutation updateTodo($id: ID!, $text: String!, $description: String!, $isCompleted: Boolean!, $ordering: Int!, $completedAt: String) {
+    updateTodo(id: $id, text: $text, description: $description, isCompleted: $isCompleted, ordering: $ordering, completedAt: $completedAt) {
       id
       text
       description
       isCompleted
       ordering
+      completedAt
     }
   }
 `
@@ -59,6 +61,9 @@ const getters: GetterTree<TodoState, RootState> = {
   },
   active(state) {
     return state.todoList.filter(todo => !todo.isCompleted)
+  },
+  completed(state) {
+    return state.todoList.filter(todo => todo.isCompleted)
   }
 }
 
@@ -84,20 +89,20 @@ const actions: ActionTree<TodoState, RootState> = {
     const { data } = await apolloClient.query({query: todoListQuery})
     commit('getTodoList', data.todoList)
   },
-  async addTodo({ commit }, {text, description, ordering}) {
+  async addTodo({ commit }, {...todo}) {
     const { data } = await apolloClient.mutate({
       mutation: addTodoMutation,
-      variables: {text, description, ordering}
+      variables: {...todo}
     })
     if (data.addTodo) {
       commit('addTodo', data.addTodo)
     }
     return data.addTodo
   },
-  async updateTodo({ commit }, todo: Todo) {
+  async updateTodo({ commit }, {...todo}) {
     const { data } = await apolloClient.mutate({
       mutation: updateTodoMutation,
-      variables: {id: todo.id, text: todo.text, description: todo.description, isCompleted: todo.isCompleted, ordering: todo.ordering}
+      variables: {...todo}
     })
     commit('updateTodo', data.updateTodo)
   },

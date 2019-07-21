@@ -61,7 +61,9 @@ export default {
     }
     
     const checkChange = (val) => {
-      store.dispatch('TodoModule/updateTodo', {...todo, isCompleted: val})
+      const date = new Date()
+      const dateString = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+      store.dispatch('TodoModule/updateTodo', {...todo, isCompleted: val, completedAt: dateString})
     }
 
     const deleteTodo = () => {
