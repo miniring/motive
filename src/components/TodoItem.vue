@@ -5,18 +5,26 @@
       <span class="todo-name" @click="editing = true">{{ todo.text }}</span>
     </template>
     <template v-else>
-      <el-input
-        style="width:350px;"
-        ref="input"
-        v-model="textInput"
-        @keydown.native.enter="updateTodo"
-        v-focus="editing"
-      ></el-input>
-      <el-button-group>
-        <el-button @click="updateTodo">수정</el-button>
-        <el-button @click="editing = false">취소</el-button>
-        <el-button @click="deleteTodo">삭제</el-button>
-      </el-button-group>
+      <el-form ref="form" label-width="80px">
+        <el-form-item label="제목">
+          <el-input
+              style="width:350px;"
+              ref="input"
+              v-model="textInput"
+              @keydown.native.enter="updateTodo"
+            />
+        </el-form-item>
+        <el-form-item label="내용">
+          <el-input v-model="description" type="textarea" rows="5" />
+        </el-form-item>
+        <el-form-item>
+          <el-button-group>
+            <el-button @click="updateTodo">수정</el-button>
+            <el-button @click="editing = false">취소</el-button>
+            <el-button @click="deleteTodo">삭제</el-button>
+          </el-button-group>
+        </el-form-item>
+      </el-form>
     </template>
   </div>
 </template>
@@ -33,25 +41,18 @@ export default {
       required: true
     }
   },
-  directives: {
-    focus(el, { value }, { context }) {
-      if (value) {
-        context.$nextTick(() => {
-          context.$refs.input.focus()
-        })
-      }
-    }
-  },
   setup(props, { emit }) {
     const todo = props.todo
     const editing = value(false)
     const textInput = value(todo.text)
+    const description = value(todo.description)
     const checkValue = value(todo.isCompleted)
 
     const updateTodo = () => {
       store.dispatch('TodoModule/updateTodo', {
         ...todo,
-        text: textInput.value
+        text: textInput.value,
+        description: description.value
       })
       editing.value = false
     }
@@ -74,6 +75,7 @@ export default {
     return {
       editing,
       textInput,
+      description,
       checkValue,
       updateTodo,
       checkChange,
