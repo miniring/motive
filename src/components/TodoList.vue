@@ -8,74 +8,36 @@
         </li>
       </draggable>
     </ul>
-    <div style="margin-top: 15px;">
-      <el-input placeholder="할 일 추가하기"
-        v-model="textInput"
-        @keydown.native.enter="addTodo">
-        <template slot="append">
-          <span @click="addTodo">추가</span>
-        </template>
-      </el-input>
-    </div>
+    <todo-add />
   </div>
 </template>
 
 <script lang="ts">
 import { store } from '../store'
-import { TodoList, TodoState, Todo } from '../types'
-import { value, computed, onCreated } from 'vue-function-api'
+import { computed, onCreated } from 'vue-function-api'
 import TodoItem from './TodoItem.vue'
-import { Message } from 'element-ui'
+import TodoAdd from './TodoAdd.vue'
 import draggable from 'vuedraggable'
 
 
 function useTodo() {
-  const todoList = computed(() => store.state.TodoModule.todoList)
   const activeTodoList = computed(
     () => store.getters['TodoModule/active'],
     value => {
       store.commit('TodoModule/updateTodoList', value)
     }
   )
-  const textInput = value('')
-
-  const validate = () => {
-    if (activeTodoList.value.length >= 5) {
-      Message({
-        type: 'warning',
-        message: '오늘 할 일은 5개 이상 추가할 수 없습니다.'
-      })
-      return false
-    }
-    return true
-  }
-
-  const addTodo = async () => {
-    if (!validate()) {
-      return
-    }
-
-    await store.dispatch('TodoModule/addTodo', {
-      text: textInput.value,
-      description: '',
-      ordering: activeTodoList.value.length + 1
-    })
-    textInput.value = ''
-  }
-
   onCreated(() => {
     store.dispatch('TodoModule/getTodoList')
   })
 
   return  {
-    activeTodoList,
-    textInput,
-    addTodo
+    activeTodoList
   }
 }
 
 export default {
-  components: { TodoItem, draggable },
+  components: { TodoItem, TodoAdd, draggable },
   setup(props) {
     return {
       ...useTodo()

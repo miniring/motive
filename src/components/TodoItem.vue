@@ -5,7 +5,7 @@
       <span class="todo-name" @click="editing = true">{{ todo.text }}</span>
     </template>
     <template v-else>
-      <el-form ref="form" label-width="80px">
+      <el-form ref="form" label-width="80px" @submit.native.prevent="updateTodo">
         <el-form-item label="제목">
           <el-input
               style="width:350px;"
