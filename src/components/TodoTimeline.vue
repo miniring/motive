@@ -5,8 +5,11 @@
       :key="index"
       :timestamp="todo.completedAt"
     >
-      <el-checkbox :value="todo.isCompleted" @change="updateTodo(todo)">{{ todo.text }}</el-checkbox>
-      
+      <el-checkbox
+        :value="todo.isCompleted"
+        @change="updateTodo(todo)">
+        {{ todo.text }}
+      </el-checkbox>
     </el-timeline-item>
   </el-timeline>
 </template>
@@ -18,6 +21,7 @@ import { Todo } from '../types'
 import { store } from '../store'
 
 const { mapGetters } = createNamespacedHelpers('TodoModule')
+
 export default {
   computed: {
     ...mapGetters(['completed', 'active'])

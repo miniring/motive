@@ -41,8 +41,7 @@ export default {
       required: true
     }
   },
-  setup(props, { emit }) {
-    const todo = props.todo
+  setup({todo}) {
     const editing = value(false)
     const textInput = value(todo.text)
     const description = value(todo.description)

@@ -8,7 +8,7 @@
         </li>
       </draggable>
     </ul>
-    <todo-add />
+    <todo-add/>
   </div>
 </template>
 
@@ -38,7 +38,7 @@ function useTodo() {
 
 export default {
   components: { TodoItem, TodoAdd, draggable },
-  setup(props) {
+  setup() {
     return {
       ...useTodo()
     }

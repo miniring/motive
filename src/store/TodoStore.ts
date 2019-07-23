@@ -121,7 +121,7 @@ const actions: ActionTree<TodoState, RootState> = {
       variables: { ...todo }
     })
     if (data.addTodo) {
-      commit('addTodo', data.addTodo)
+      commit('addTodo', {...data.addTodo, description: ''})
     }
     return data.addTodo
   },
