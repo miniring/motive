@@ -34,6 +34,10 @@ import { store } from '../store'
 import { Todo } from '../types'
 import { value, onCreated } from 'vue-function-api'
 
+interface props {
+  todo: Todo
+}
+
 export default {
   props: {
     todo: {
@@ -41,7 +45,7 @@ export default {
       required: true
     }
   },
-  setup({todo}) {
+  setup({todo}: props) {
     const editing = value(false)
     const textInput = value(todo.text)
     const description = value(todo.description)
@@ -56,7 +60,7 @@ export default {
       editing.value = false
     }
 
-    const checkChange = val => {
+    const checkChange = (val: Boolean) => {
       const date = new Date()
       const dateString = `${date.getFullYear()}-${date.getMonth() +
         1}-${date.getDate()}`

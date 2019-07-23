@@ -2,36 +2,38 @@
   <div>
     <ul id="todo-list">
       <draggable v-model="activeTodoList">
-        <li v-for="todo in activeTodoList" 
-          :key="todo.id">
+        <li v-for="todo in activeTodoList" :key="todo.id">
           <todo-item :todo="todo" />
         </li>
       </draggable>
     </ul>
-    <todo-add/>
+    <todo-add />
   </div>
 </template>
 
 <script lang="ts">
 import { store } from '../store'
+import { Todo } from '../types'
 import { computed, onCreated } from 'vue-function-api'
 import TodoItem from './TodoItem.vue'
 import TodoAdd from './TodoAdd.vue'
-import draggable from 'vuedraggable'
-
+const draggable: any = require('vuedraggable')
 
 function useTodo() {
   const activeTodoList = computed(
     () => store.getters['TodoModule/active'],
     value => {
-      store.commit('TodoModule/updateTodoList', value)
+      value.forEach((item: Todo, index: number) => {
+        item.ordering = index + 1
+      })
+      store.commit('TodoModule/updateTodoList', [...value])
     }
   )
   onCreated(() => {
     store.dispatch('TodoModule/getTodoList')
   })
 
-  return  {
+  return {
     activeTodoList
   }
 }
@@ -47,14 +49,14 @@ export default {
 </script>
 
 <style scoped>
-#todo-list li{
+#todo-list li {
   min-height: 24px;
   font-size: 14px;
   color: #333;
   list-style: none;
   padding: 9px 16px 9px 5px;
-  -webkit-transition: color .1s ease-in,background-color .1s ease-in;
-  transition: color .1s ease-in,background-color .1s ease-in;
+  -webkit-transition: color 0.1s ease-in, background-color 0.1s ease-in;
+  transition: color 0.1s ease-in, background-color 0.1s ease-in;
   line-height: 1.25;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -63,5 +65,4 @@ export default {
   -ms-flex-align: center;
   align-items: center;
 }
-
 </style>
