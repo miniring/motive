@@ -4,17 +4,18 @@ import { TodoState, Todo } from '../types'
 import { apolloClient } from '../apollo'
 import { RootState } from './index'
 
-
-const todoListQuery = gql`{
-  todoList {
-    id
-    text
-    description
-    isCompleted
-    ordering
-    completedAt
+const todoListQuery = gql`
+  {
+    todoList {
+      id
+      text
+      description
+      isCompleted
+      ordering
+      completedAt
+    }
   }
-}`
+`
 
 const addTodoMutation = gql`
   mutation addTodo($text: String!, $description: String, $ordering: Int) {
@@ -27,8 +28,22 @@ const addTodoMutation = gql`
   }
 `
 const updateTodoMutation = gql`
-  mutation updateTodo($id: ID!, $text: String!, $description: String!, $isCompleted: Boolean!, $ordering: Int!, $completedAt: String) {
-    updateTodo(id: $id, text: $text, description: $description, isCompleted: $isCompleted, ordering: $ordering, completedAt: $completedAt) {
+  mutation updateTodo(
+    $id: ID!
+    $text: String!
+    $description: String!
+    $isCompleted: Boolean!
+    $ordering: Int!
+    $completedAt: String
+  ) {
+    updateTodo(
+      id: $id
+      text: $text
+      description: $description
+      isCompleted: $isCompleted
+      ordering: $ordering
+      completedAt: $completedAt
+    ) {
       id
       text
       description
@@ -60,7 +75,18 @@ const getters: GetterTree<TodoState, RootState> = {
     return state.todoList
   },
   active(state) {
-    return state.todoList.filter(todo => !todo.isCompleted)
+    const todoList = state.todoList.filter(todo => !todo.isCompleted)
+    todoList.sort((a, b) => {
+      if (a.ordering > b.ordering) {
+        return 1
+      }
+
+      if (a.ordering < b.ordering) {
+        return -1
+      }
+      return 0
+    })
+    return todoList
   },
   completed(state) {
     return state.todoList.filter(todo => todo.isCompleted)
@@ -68,7 +94,7 @@ const getters: GetterTree<TodoState, RootState> = {
 }
 
 const mutations: MutationTree<TodoState> = {
-  getTodoList(state, todoList) {
+  updateTodoList(state, todoList) {
     state.todoList = todoList
   },
   addTodo(state, todo) {
@@ -86,30 +112,30 @@ const mutations: MutationTree<TodoState> = {
 
 const actions: ActionTree<TodoState, RootState> = {
   async getTodoList({ commit }) {
-    const { data } = await apolloClient.query({query: todoListQuery})
-    commit('getTodoList', data.todoList)
+    const { data } = await apolloClient.query({ query: todoListQuery })
+    commit('updateTodoList', data.todoList)
   },
-  async addTodo({ commit }, {...todo}) {
+  async addTodo({ commit }, { ...todo }) {
     const { data } = await apolloClient.mutate({
       mutation: addTodoMutation,
-      variables: {...todo}
+      variables: { ...todo }
     })
     if (data.addTodo) {
       commit('addTodo', data.addTodo)
     }
     return data.addTodo
   },
-  async updateTodo({ commit }, {...todo}) {
+  async updateTodo({ commit }, { ...todo }) {
     const { data } = await apolloClient.mutate({
       mutation: updateTodoMutation,
-      variables: {...todo}
+      variables: { ...todo }
     })
     commit('updateTodo', data.updateTodo)
   },
   async deleteTodo({ commit }, todoId: number) {
     const { data } = await apolloClient.mutate({
       mutation: deleteTodoMutation,
-      variables: {id: todoId}
+      variables: { id: todoId }
     })
 
     commit('deleteTodo', data.deleteTodo)
@@ -117,5 +143,9 @@ const actions: ActionTree<TodoState, RootState> = {
 }
 
 export const TodoModule: Module<TodoState, RootState> = {
-  state, getters, mutations, actions, namespaced: true
+  state,
+  getters,
+  mutations,
+  actions,
+  namespaced: true
 }

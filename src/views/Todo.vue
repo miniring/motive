@@ -1,31 +1,23 @@
 <template>
   <div id="todo">
-    <el-card class="important">
-      {{ active[0] ? active[0].text : '작업을 추가하세요.'}}
-    </el-card>
+    <el-card class="important">{{ active[0] ? active[0].text : '작업을 추가하세요.'}}</el-card>
     <todo-list></todo-list>
-    <el-timeline :reverse="false" style="margin-top:20px;text-align:left;">
-      <el-timeline-item
-        v-for="(todo, index) in completed"
-        :key="index"
-        :timestamp="todo.completedAt">
-        {{todo.text}}
-      </el-timeline-item>
-    </el-timeline>
+    <todo-timeline></todo-timeline>
   </div>
 </template>
 
 <script lang="ts">
-import {createNamespacedHelpers} from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
 
-const {mapGetters} = createNamespacedHelpers('TodoModule')
+const { mapGetters } = createNamespacedHelpers('TodoModule')
 
 export default {
   components: {
-    'todo-list': () => import('../components/TodoList.vue')
+    'todo-list': () => import('../components/TodoList.vue'),
+    'todo-timeline': () => import('../components/TodoTimeline.vue')
   },
   computed: {
-    ...mapGetters(['active', 'completed'])
+    ...mapGetters(['active'])
   }
 }
 </script>

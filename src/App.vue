@@ -68,7 +68,7 @@ body {
   position: fixed;
   top: 0;
   height: 44px;
-  background: linear-gradient(to right, rgb(239, 50, 217), rgb(137, 255, 253))
+  background: linear-gradient(to right, rgb(239, 50, 217), rgb(137, 255, 253));
 }
 
 #top_bar_inner {
@@ -87,19 +87,19 @@ body {
     opacity: 0;
   }
   20% {
-      opacity: .2;
+    opacity: 0.2;
   }
   40% {
-      opacity: .4;
+    opacity: 0.4;
   }
   60% {
-      opacity: .6;
+    opacity: 0.6;
   }
   80% {
-      opacity: .9;
+    opacity: 0.9;
   }
   100% {
-      opacity: 1;
+    opacity: 1;
   }
 }
 #app_box {
@@ -151,8 +151,8 @@ body {
   list-style: none;
   cursor: pointer;
   padding: 9px 16px 9px 5px;
-  -webkit-transition: color .1s ease-in,background-color .1s ease-in;
-  transition: color .1s ease-in,background-color .1s ease-in;
+  -webkit-transition: color 0.1s ease-in, background-color 0.1s ease-in;
+  transition: color 0.1s ease-in, background-color 0.1s ease-in;
   line-height: 1.25;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -184,8 +184,8 @@ body {
   margin-left: 266px;
   border-right: 1px solid #f1f1f1;
   min-height: calc(100vh);
-  -webkit-transition: opacity 250ms cubic-bezier(0.4,0,0.6,1);
-  transition: opacity 250ms cubic-bezier(0.4,0,0.6,1);
+  -webkit-transition: opacity 250ms cubic-bezier(0.4, 0, 0.6, 1);
+  transition: opacity 250ms cubic-bezier(0.4, 0, 0.6, 1);
 }
 #editor {
   vertical-align: top;

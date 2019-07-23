@@ -1,15 +1,17 @@
 <template>
   <div>
     <ul id="todo-list">
-      <li v-for="todo in activeTodoList" 
-        :key="todo.id">
-        <todo-item 
-          :todo="todo"
-        />
-      </li>
+      <draggable v-model="activeTodoList">
+        <li v-for="todo in activeTodoList" 
+          :key="todo.id">
+          <todo-item :todo="todo" />
+        </li>
+      </draggable>
     </ul>
     <div style="margin-top: 15px;">
-      <el-input placeholder="할 일 추가하기" v-model="textInput" @keydown.native.enter="addTodo">
+      <el-input placeholder="할 일 추가하기"
+        v-model="textInput"
+        @keydown.native.enter="addTodo">
         <template slot="append">
           <span @click="addTodo">추가</span>
         </template>
@@ -21,14 +23,20 @@
 <script lang="ts">
 import { store } from '../store'
 import { TodoList, TodoState, Todo } from '../types'
-import { value, state, computed, watch, onMounted, onCreated } from 'vue-function-api'
+import { value, computed, onCreated } from 'vue-function-api'
 import TodoItem from './TodoItem.vue'
 import { Message } from 'element-ui'
+import draggable from 'vuedraggable'
 
 
 function useTodo() {
   const todoList = computed(() => store.state.TodoModule.todoList)
-  const activeTodoList = computed(() => todoList.value.filter(todo => !todo.isCompleted))
+  const activeTodoList = computed(
+    () => store.getters['TodoModule/active'],
+    value => {
+      store.commit('TodoModule/updateTodoList', value)
+    }
+  )
   const textInput = value('')
 
   const validate = () => {
@@ -67,7 +75,7 @@ function useTodo() {
 }
 
 export default {
-  components: { TodoItem },
+  components: { TodoItem, draggable },
   setup(props) {
     return {
       ...useTodo()
